@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text decoder</title>
+</head>
+<body>
+
+<h2>Decoding</h2>
+<form id="decodeForm">
+  <input id="decodingText" type="text" class="textInput" name="inputText">
+  <button type="submit">Decode</button>
+  <br/>
+  <div id="decodedText" style="min-height: 10pt; margin-top: 30pt"></div>
+</form>
+
+<div id="progressBarsContainer" style="display: none;"></div>
+
+<script>
+  const characterSelection = [19, 83, 121, 19, 73, 109, 113, 51, 65, 21];
+  document.getElementById('decodeForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const textInput = document.getElementById('decodingText').value;
+    document.getElementById("decodedText").innerHTML = "";
+
+    const fibonacciSeq = fibonacciShift();
+    let decoded = "";
+
+    for (let i = 0; i < textInput.length; i++) {
+      let hash = textInput[i];
+      for (let j = 0; j < fibonacciSeq[10 - (i % 10 + 1)]; j++) {
+        hash = await sha512(hash);
+      }
+      decoded += hash[characterSelection[i]];
+    }
+    document.getElementById("decodedText").innerHTML += decoded;
+  });
+
+  function fibonacciShift() {
+    // TODO: Returns an array of the first 20 fibonacci numbers where the first one is skipped.
+    return [];
+  }
+
+  async function sha512(input) {
+    // TODO: Take the input and calcucate the SHA512 of the input value. Pay attention to convert the outcoming bytes
+    // correctly to characters (all characters from the alphabet!). Hint: Have a closer look at the max radix.
+    // Additionally, cut off the first two characters (as they are normally "0x") and return the outcoming characters.
+  }
+</script>
+
+</body>
+</html>
